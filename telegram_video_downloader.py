@@ -38,8 +38,13 @@ async def download_video(update: Update, context: ContextTypes.DEFAULT_TYPE) -> 
 
             await context.bot.send_video(chat_id=update.effective_chat.id, video=open(file_name, 'rb'))
             await context.bot.send_message(chat_id=update.effective_chat.id, text=f"✅ Video '{file_name}' sent!")
-    except Exception as e:
+
+            # Clean up the downloaded file
+            os.remove(file_name)
+    except yt_dlp.utils.DownloadError as e:
         await context.bot.send_message(chat_id=update.effective_chat.id, text=f"Failed to download: {str(e)}")
+    except Exception as e:
+        await context.bot.send_message(chat_id=update.effective_chat.id, text=f"An error occurred: {str(e)}")
 
 # Main function
 def main() -> None:
