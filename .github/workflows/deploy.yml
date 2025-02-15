@@ -23,11 +23,11 @@ jobs:
         python -m venv venv
         source venv/bin/activate
         python -m pip install --upgrade pip
-        pip install -r requirements.txt
+        pip install -r ./requirements.txt  # ✅ Ensure correct path
 
     - name: Run bot
       env:
         BOT_TOKEN: ${{ secrets.BOT_TOKEN }}  # ✅ Secret variable use karna zaroori hai
       run: |
         source venv/bin/activate
-        python telegram_video_downloader/main.py  # ✅ Bot ka correct path
+        python telegram_video_downloader.py  # ✅ Ensure correct script path
