@@ -3,7 +3,7 @@ name: Deploy Telegram Bot
 on:
   push:
     branches:
-      - main
+      - main  # Jab bhi "main" pe push ho, workflow chalega
 
 jobs:
   deploy:
@@ -11,21 +11,23 @@ jobs:
     
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
-    
+      uses: actions/checkout@v4  # ✅ Latest version
+
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4  # ✅ Latest version
       with:
-        python-version: '3.9'  # Updated Python version to 3.9
-    
+        python-version: "3.10"  # ✅ Latest stable version
+
     - name: Install dependencies
       run: |
         python -m venv venv
         source venv/bin/activate
-        pip install --upgrade pip  # Upgrade pip to avoid any version issues
+        python -m pip install --upgrade pip
         pip install -r requirements.txt
-    
+
     - name: Run bot
+      env:
+        BOT_TOKEN: ${{ secrets.BOT_TOKEN }}  # ✅ Secret variable use karna zaroori hai
       run: |
         source venv/bin/activate
-        python bot.py
+        python telegram_video_downloader/main.py  # ✅ Bot ka correct path
